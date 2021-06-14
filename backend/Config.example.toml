@@ -1,0 +1,11 @@
+[server]
+host = "127.0.0.1"
+port = 8080
+
+[pg]
+host = "127.0.0.1"
+port = 5432
+user= "postgres"
+password = "pass"
+dbname = "database_name"
+pool.max_size = 16

@@ -1,0 +1,14 @@
+server/target
+server/Cargo.lock
+server/Config.toml
+server/.idea
+
+client/target
+client/**/*.rs.bk
+client/Cargo.lock
+client/bin/
+client/pkg/
+client/dist/
+client/wasm-pack.log
+client/node_modules
+client/.idea
