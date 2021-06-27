@@ -1,1 +1,0 @@
-/*https://yew.rs/docs/concepts/router*/
