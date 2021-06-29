@@ -1,5 +1,11 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
+use yew::services::ConsoleService;
+
+use i18n_codegen::i18n;
+mod locales;
+use crate::locales::config::Locale;
+use std::env;
 
 mod pages;
 use pages::{
@@ -28,6 +34,7 @@ struct Model {
     route_service: RouteService<()>,
     route: Route<()>,
     router_agent: Box<dyn Bridge<RouteAgent>>,
+    language: Locale,
 }
 
 impl Component for Model {
@@ -35,15 +42,19 @@ impl Component for Model {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        ConsoleService::info(&*format!("Debug mode: {}", true));
+
         let route_service : RouteService<()> = RouteService::new();
         let route = route_service.get_route();
         let router_agent = RouteAgent::bridge(link.callback(Msg::RouteChanged));
+        let language = Locale::get(&Locale::En);
 
         Self {
             link,
             route_service,
             route,
             router_agent,
+            language,
         }
     }
 
@@ -86,11 +97,13 @@ impl Model {
     }
 
     fn view_nav(&self) -> Html {
+        i18n!("src/locales/navigation");
         html! {
             <nav>
                 <ul class="nav">
+            <li>{"3232"} </li>
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Blog><a>{"Blog"}</a></RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::Blog><a>{{Locale::Ru.blog()}}</a></RouterAnchor<AppRoute>>
                     </li>
 
                     <li>

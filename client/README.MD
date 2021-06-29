@@ -35,5 +35,11 @@ https://github.com/thedodd/trunk
 
 TODO:
 
-Locales - https://lib.rs/crates/i18n_codegen
+Locales - https://lib.rs/crates/i18n_codegen - DONE
+
+https://docs.rs/cookie/0.15.0/cookie/
+
+
 Communicate with server side - https://github.com/yewstack/yew/issues/1385
+
+https://yew.rs/concepts/services/fetch

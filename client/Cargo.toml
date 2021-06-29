@@ -5,5 +5,10 @@ authors = ["1alloc <1alloc@pm.me>"]
 edition = "2018"
 
 [dependencies]
+i18n_codegen = "0.1.1"
 yew = "0.18"
 yew-router = "0.15"
+
+[dev-dependencies]
+log = "0.4.6"
+wasm-logger = "0.2.0"
