@@ -37,9 +37,15 @@ TODO:
 
 Locales - https://lib.rs/crates/i18n_codegen - DONE
 
+https://github.com/yewstack/yew_router - active nav class
+
 https://docs.rs/cookie/0.15.0/cookie/
 
 
 Communicate with server side - https://github.com/yewstack/yew/issues/1385
 
+api routes exception
+
 https://yew.rs/concepts/services/fetch
+
+reqwest - https://crates.io/crates/reqwest

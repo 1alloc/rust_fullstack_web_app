@@ -1,14 +1,13 @@
-#[derive(Copy, Clone, Debug)]
-pub enum Locale {
-    En,
-    Ru,
-}
+use i18n_codegen::i18n;
+
+i18n!("src/locales/navigation");
 
 impl Locale {
-    pub fn get(&self) -> Locale {
-        match *self {
-            Locale::En => Locale::En,
-            Locale::Ru => Locale::Ru,
+    pub fn get(selected_language: &String) -> Locale {
+        match selected_language.as_str() {
+            "english" => Locale::En,
+            "russian" => Locale::Ru,
+            _ => Locale::En
         }
     }
 }

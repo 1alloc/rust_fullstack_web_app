@@ -1,23 +1,27 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew::services::ConsoleService;
+use std::time::Duration;
+use wasm_cookies;
+use wasm_cookies::CookieOptions;
 
-use i18n_codegen::i18n;
 mod locales;
-use crate::locales::config::Locale;
-use std::env;
+use locales::config;
 
 mod pages;
 use pages::{
-    index::Index, blog::Blog
+    index::Index, blog::Blog,
 };
 
 mod components;
 use components::{
-    header::Header, footer::Footer
+    header::Header, footer::Footer,
 };
 
+
+
 enum Msg {
+    LocaleSwitch(String),
     RouteChanged(Route<()>),
 }
 
@@ -34,7 +38,7 @@ struct Model {
     route_service: RouteService<()>,
     route: Route<()>,
     router_agent: Box<dyn Bridge<RouteAgent>>,
-    language: Locale,
+    locale: config::Locale,
 }
 
 impl Component for Model {
@@ -42,28 +46,41 @@ impl Component for Model {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        ConsoleService::info(&*format!("Debug mode: {}", true));
+       ConsoleService::info(&*format!("Debug mode: {}", wasm_cookies::get_raw("language").is_none()));
 
-        let route_service : RouteService<()> = RouteService::new();
+        if wasm_cookies::get_raw("language").is_none() {
+            let cookies_options = CookieOptions::default();
+            wasm_cookies::set("language", "english", &cookies_options.expires_after( Duration::from_secs(31536000)));
+        }
+
+        let route_service: RouteService<()> = RouteService::new();
         let route = route_service.get_route();
         let router_agent = RouteAgent::bridge(link.callback(Msg::RouteChanged));
-        let language = Locale::get(&Locale::En);
+
+
+        let locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());
 
         Self {
             link,
             route_service,
             route,
             router_agent,
-            language,
+            locale,
         }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
+            Msg::LocaleSwitch(lang) => {
+                let cookies_options = CookieOptions::default();
+                wasm_cookies::set("language", &*lang, &cookies_options.expires_after( Duration::from_secs(31536000)));
+                self.locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());
+            }
+
             Msg::RouteChanged(route) => {
                 self.route_service.set_route(&route.route, ());
                 self.route = route
-            },
+            }
         }
         true
     }
@@ -89,7 +106,7 @@ impl Component for Model {
 
 impl Model {
     fn route_switch(&self) -> Html {
-        match AppRoute::switch(self.route.clone()){
+        match AppRoute::switch(self.route.clone()) {
             Some(AppRoute::Index) => html! {<Index/>},
             Some(AppRoute::Blog) => html! {<Blog/>},
             None => html! {}
@@ -97,20 +114,19 @@ impl Model {
     }
 
     fn view_nav(&self) -> Html {
-        i18n!("src/locales/navigation");
         html! {
             <nav>
                 <ul class="nav">
-            <li>{"3232"} </li>
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Blog><a>{{Locale::Ru.blog()}}</a></RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::Blog><a>{{self.locale.blog()}}</a></RouterAnchor<AppRoute>>
                     </li>
 
                     <li>
                         <RouterAnchor<AppRoute> route=AppRoute::Index><a>{"About"}</a></RouterAnchor<AppRoute>>
                     </li>
 
-                    <li><a href="#">{"Contacts"}</a></li>
+                    <li><button onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("russian")))>{"Русский"}</button></li>
+                    <li><button onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("english")))>{"English"}</button></li>
                 </ul>
             </nav>
         }
