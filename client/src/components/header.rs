@@ -2,14 +2,23 @@ use yew::prelude::*;
 
 pub enum Msg {}
 
-pub struct Header {}
+#[derive(Properties, Clone, PartialEq)]
+pub struct Props {
+    pub title: String,
+}
+
+pub struct Header {
+    props: Props,
+}
 
 impl Component for Header {
     type Message = Msg;
-    type Properties = ();
+    type Properties = Props;
 
-    fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Self {}
+    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        Self {
+            props
+        }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
@@ -24,7 +33,7 @@ impl Component for Header {
         html! {
             <header>
                 <h1>{"1alloc • software engineer"}</h1>
-                <p class="sub_header">{"Rustacean"}</p>
+                <p class="sub_header">{self.props.title.clone()}</p>
             </header>
         }
     }

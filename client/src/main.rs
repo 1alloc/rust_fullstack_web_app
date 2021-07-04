@@ -46,7 +46,7 @@ impl Component for Model {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-       ConsoleService::info(&*format!("Debug mode: {}", wasm_cookies::get_raw("language").is_none()));
+       ConsoleService::info(&*format!("Debug mode: {}", true));
 
         if wasm_cookies::get_raw("language").is_none() {
             let cookies_options = CookieOptions::default();
@@ -94,7 +94,7 @@ impl Component for Model {
             <>
             { self.view_nav() }
 
-            <Header/>
+            <Header title="PROPS FROM MAIN COMPONENT" />
 
             { self.route_switch() }
 
@@ -118,15 +118,31 @@ impl Model {
             <nav>
                 <ul class="nav">
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Blog><a>{{self.locale.blog()}}</a></RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::Index>{self.locale.main()}</RouterAnchor<AppRoute>>
                     </li>
-
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Index><a>{"About"}</a></RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::Blog>{self.locale.blog()}</RouterAnchor<AppRoute>>
                     </li>
-
-                    <li><button onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("russian")))>{"Русский"}</button></li>
-                    <li><button onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("english")))>{"English"}</button></li>
+                    <li class="dropdown">
+                        <span><img src="images/lang.png"/></span>
+                        <ul class="dropdown-content" role="menu" aria-expanded="false">
+                        <li>
+                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("english")))>
+                                <img src="images/english.png" height="15" width="15"/> {"English"}
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("russian")))>
+                                <img src="images/russian.png" height="15" width="15"/> {"Русский"}
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("romanian")))>
+                                 <img src="images/romanian.png" height="15" width="15"/> {"Română"}
+                            </a>
+                        </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         }
