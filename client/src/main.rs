@@ -94,7 +94,7 @@ impl Component for Model {
             <>
             { self.view_nav() }
 
-            <Header title="PROPS FROM MAIN COMPONENT" />
+            <Header locale=self.locale />
 
             { self.route_switch() }
 

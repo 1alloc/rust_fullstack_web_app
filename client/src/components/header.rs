@@ -1,10 +1,11 @@
 use yew::prelude::*;
+use crate::locales::config;
 
 pub enum Msg {}
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Properties, Clone)]
 pub struct Props {
-    pub title: String,
+    pub locale: config::Locale,
 }
 
 pub struct Header {
@@ -33,7 +34,7 @@ impl Component for Header {
         html! {
             <header>
                 <h1>{"1alloc • software engineer"}</h1>
-                <p class="sub_header">{self.props.title.clone()}</p>
+                <p class="sub_header">{self.props.locale.main()}</p>
             </header>
         }
     }
