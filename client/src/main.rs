@@ -1,27 +1,27 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew::services::ConsoleService;
+use yewtil::store::{Bridgeable, ReadOnly, StoreWrapper};
 use std::time::Duration;
 use wasm_cookies;
 use wasm_cookies::CookieOptions;
-
+mod agents;
+use crate::agents::locale::{LocaleStored, Request};
 mod locales;
 use locales::config;
-
 mod pages;
 use pages::{
     index::Index, blog::Blog,
 };
-
 mod components;
 use components::{
     header::Header, footer::Footer,
 };
 
 
-
 enum Msg {
     LocaleSwitch(String),
+    LocaleStore(ReadOnly<LocaleStored>),
     RouteChanged(Route<()>),
 }
 
@@ -34,11 +34,13 @@ pub enum AppRoute {
 }
 
 struct Model {
+    title: String,
     link: ComponentLink<Self>,
     route_service: RouteService<()>,
     route: Route<()>,
     router_agent: Box<dyn Bridge<RouteAgent>>,
     locale: config::Locale,
+    locale_agent: Box<dyn Bridge<StoreWrapper<LocaleStored>>>,
 }
 
 impl Component for Model {
@@ -47,6 +49,8 @@ impl Component for Model {
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
        ConsoleService::info(&*format!("Debug mode: {}", true));
+
+        let title = "1alloc".to_string();
 
         if wasm_cookies::get_raw("language").is_none() {
             let cookies_options = CookieOptions::default();
@@ -59,13 +63,15 @@ impl Component for Model {
 
 
         let locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());
-
+        let locale_agent = LocaleStored::bridge(link.callback(Msg::LocaleStore));
         Self {
+            title,
             link,
             route_service,
             route,
             router_agent,
             locale,
+            locale_agent,
         }
     }
 
@@ -75,7 +81,10 @@ impl Component for Model {
                 let cookies_options = CookieOptions::default();
                 wasm_cookies::set("language", &*lang, &cookies_options.expires_after( Duration::from_secs(31536000)));
                 self.locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());
+                self.locale_agent.send(Request::SetLocale(lang))
             }
+
+            Msg::LocaleStore(_lang) => {}
 
             Msg::RouteChanged(route) => {
                 self.route_service.set_route(&route.route, ());
@@ -94,7 +103,7 @@ impl Component for Model {
             <>
             { self.view_nav() }
 
-            <Header locale=self.locale />
+            <Header title=1 />
 
             { self.route_switch() }
 
@@ -127,17 +136,17 @@ impl Model {
                         <span><img src="images/lang.png"/></span>
                         <ul class="dropdown-content" role="menu" aria-expanded="false">
                         <li>
-                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("english")))>
+                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("english")))>
                                 <img src="images/english.png" height="15" width="15"/> {"English"}
                             </a>
                         </li>
                         <li>
-                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("russian")))>
+                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("russian")))>
                                 <img src="images/russian.png" height="15" width="15"/> {"Русский"}
                             </a>
                         </li>
                         <li>
-                            <a onclick=self.link.callback(|lang| Msg::LocaleSwitch(String::from("romanian")))>
+                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("romanian")))>
                                  <img src="images/romanian.png" height="15" width="15"/> {"Română"}
                             </a>
                         </li>
