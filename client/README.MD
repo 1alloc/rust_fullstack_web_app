@@ -49,5 +49,3 @@ api routes exception
 https://yew.rs/concepts/services/fetch
 
 reqwest - https://crates.io/crates/reqwest
-
-use Store for locale - https://github.com/yewstack/yew/tree/master/examples/store

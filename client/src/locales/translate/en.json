@@ -1,5 +1,6 @@
 {
   "blog": "Blog",
   "greeting": "Hello {name}",
-  "main": "Main"
+  "main": "Main",
+  "header_description": "Blog about programming and not only"
 }

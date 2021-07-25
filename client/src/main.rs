@@ -34,13 +34,18 @@ pub enum AppRoute {
 }
 
 struct Model {
-    title: String,
+    site_data: SiteData,
     link: ComponentLink<Self>,
     route_service: RouteService<()>,
     route: Route<()>,
     router_agent: Box<dyn Bridge<RouteAgent>>,
     locale: config::Locale,
     locale_agent: Box<dyn Bridge<StoreWrapper<LocaleStored>>>,
+}
+
+struct SiteData {
+    title: String,
+    email: String,
 }
 
 impl Component for Model {
@@ -50,7 +55,7 @@ impl Component for Model {
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
        ConsoleService::info(&*format!("Debug mode: {}", true));
 
-        let title = "1alloc".to_string();
+        let site_data = SiteData { title: "1alloc.com".to_string(), email: "1alloc@pm.me".to_string() };
 
         if wasm_cookies::get_raw("language").is_none() {
             let cookies_options = CookieOptions::default();
@@ -65,7 +70,7 @@ impl Component for Model {
         let locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());
         let locale_agent = LocaleStored::bridge(link.callback(Msg::LocaleStore));
         Self {
-            title,
+            site_data,
             link,
             route_service,
             route,
@@ -103,11 +108,11 @@ impl Component for Model {
             <>
             { self.view_nav() }
 
-            <Header title=1 />
+            <Header title=self.site_data.title.clone() />
 
             { self.route_switch() }
 
-            <Footer/>
+            <Footer title=self.site_data.title.clone() email=self.site_data.email.clone()/>
             </>
         }
     }

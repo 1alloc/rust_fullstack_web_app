@@ -2,14 +2,24 @@ use yew::prelude::*;
 
 pub enum Msg {}
 
-pub struct Footer {}
+#[derive(Properties, Clone)]
+pub struct Props {
+    pub title: String,
+    pub email: String,
+}
+
+pub struct Footer {
+    props: Props,
+}
 
 impl Component for Footer {
     type Message = Msg;
-    type Properties = ();
+    type Properties = Props;
 
-    fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Self {}
+    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        Self {
+            props,
+        }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
@@ -21,10 +31,12 @@ impl Component for Footer {
     }
 
     fn view(&self) -> Html {
+        let mut mailto: String = "mailto:".to_owned();
+        mailto.push_str(&*self.props.email.clone());
         html! {
             <footer>
-                <p>{ "1alloc" }</p>
-                <p><a href="mailto:1alloc@pm.me">{ "1alloc@pm.me" }</a></p>
+                <p>{self.props.title.clone()}</p>
+                <p><a href=mailto>{self.props.email.clone()}</a></p>
             </footer>
         }
     }

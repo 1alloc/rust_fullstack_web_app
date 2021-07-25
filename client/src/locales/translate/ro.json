@@ -1,5 +1,6 @@
 {
   "blog": "Blog",
   "greeting": "Bună {name}",
-  "main": "Principală"
+  "main": "Principală",
+  "header_description": "Blog despre programare și nu numai"
 }

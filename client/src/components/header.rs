@@ -9,7 +9,7 @@ pub enum Msg {
 
 #[derive(Properties, Clone)]
 pub struct Props {
-    pub title: i32,
+    pub title: String,
 }
 
 pub struct Header {
@@ -48,9 +48,8 @@ impl Component for Header {
     fn view(&self) -> Html {
         html! {
             <header>
-                <h1>{"1alloc • software engineer"}</h1>
-                <p class="sub_header">{self.locale.main()}</p>
-                <p class="sub_header">{self.props.title}</p>
+                <h1>{self.props.title.clone()}</h1>
+                <p class="sub_header">{self.locale.header_description()}</p>
             </header>
         }
     }
