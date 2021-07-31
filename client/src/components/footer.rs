@@ -34,9 +34,13 @@ impl Component for Footer {
         let mut mailto: String = "mailto:".to_owned();
         mailto.push_str(&*self.props.email.clone());
         html! {
-            <footer>
-                <p>{self.props.title.clone()}</p>
-                <p><a href=mailto>{self.props.email.clone()}</a></p>
+            <footer class="site-footer">
+               <ul>
+                        <li><a href=mailto target="_blank"><img src="images/email_icon.png" height="20" width="22"/></a></li>
+                        <li><a href="https://twitter.com/1alloc" target="_blank"><img src="images/twitter_icon.png" height="20" width="22"/></a></li>
+                        <li><a href="https://github.com/1alloc" target="_blank"><img src="images/github_icon.png" height="20" width="20"/></a></li>
+                        <li><a href="https://www.codewars.com/users/1alloc" target="_blank"><img src="images/codewars_icon.png" height="20" width="20"/></a></li>
+                    </ul>
             </footer>
         }
     }

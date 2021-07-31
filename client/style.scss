@@ -2,8 +2,20 @@ $background: #efefef;
 $main_color: #1b1b1b;
 $link_color: #383838;
 
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+;
+  font-weight: bold;
+}
+
 body {
-  font-family: "new century schoolbook";
+  font-family: "JetBrains Mono";
   background-color: $background;
   color: $main_color;
 }
@@ -11,6 +23,8 @@ h1 {
   text-align: center;
 }
 .sub_header {
+  margin-top: -25px;
+  font-size: 10px;
   text-align: center;
 }
 .nav {
@@ -18,7 +32,7 @@ h1 {
   list-style: none;
   padding: 1px;
   >li {
-    width: 100px;
+    width: 200px;
     display:inline-block;
   }
 }
@@ -95,4 +109,15 @@ a {
 }
 footer {
   text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  ul {
+    padding: 0;
+    li {
+      display: inline-block;
+      padding: 10px;
+    }
+  }
 }

@@ -11,7 +11,7 @@ mod locales;
 use locales::config;
 mod pages;
 use pages::{
-    index::Index, blog::Blog,
+    index::Blog, about::About, counter::Counter,
 };
 mod components;
 use components::{
@@ -27,10 +27,12 @@ enum Msg {
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoute {
-    #[to = "/blog"]
-    Blog,
+    #[to = "/counter"]
+    Counter,
+    #[to = "/about"]
+    About,
     #[to = "/"]
-    Index,
+    Blog,
 }
 
 struct Model {
@@ -121,8 +123,9 @@ impl Component for Model {
 impl Model {
     fn route_switch(&self) -> Html {
         match AppRoute::switch(self.route.clone()) {
-            Some(AppRoute::Index) => html! {<Index/>},
             Some(AppRoute::Blog) => html! {<Blog/>},
+            Some(AppRoute::About) => html! {<About/>},
+            Some(AppRoute::Counter) => html! {<Counter/>},
             None => html! {}
         }
     }
@@ -132,29 +135,32 @@ impl Model {
             <nav>
                 <ul class="nav">
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Index>{self.locale.main()}</RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::Blog>{self.locale.main()}</RouterAnchor<AppRoute>>
                     </li>
                     <li>
-                        <RouterAnchor<AppRoute> route=AppRoute::Blog>{self.locale.blog()}</RouterAnchor<AppRoute>>
+                        <RouterAnchor<AppRoute> route=AppRoute::About>{self.locale.about_me()}</RouterAnchor<AppRoute>>
                     </li>
                     <li class="dropdown">
                         <span><img src="images/lang.png"/></span>
                         <ul class="dropdown-content" role="menu" aria-expanded="false">
-                        <li>
-                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("english")))>
-                                <img src="images/english.png" height="15" width="15"/> {"English"}
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("russian")))>
-                                <img src="images/russian.png" height="15" width="15"/> {"Русский"}
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("romanian")))>
-                                 <img src="images/romanian.png" height="15" width="15"/> {"Română"}
-                            </a>
-                        </li>
+                        <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("english")))>
+                            <li>
+                                <img src="images/english.png" height="15" width="15"/>
+                                <p>{"English"}</p>
+                            </li>
+                        </a>
+                        <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("russian")))>
+                            <li>
+                                <img src="images/russian.png" height="15" width="15"/>
+                                <p>{"Русский"}</p>
+                            </li>
+                        </a>
+                        <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("romanian")))>
+                            <li>
+                                <img src="images/romanian.png" height="15" width="15"/>
+                                <p>{"Română"}</p>
+                            </li>
+                        </a>
                         </ul>
                     </li>
                 </ul>

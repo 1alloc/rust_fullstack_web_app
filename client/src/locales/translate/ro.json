@@ -1,6 +1,6 @@
 {
-  "blog": "Blog",
+  "about_me": "Despre mine",
   "greeting": "Bună {name}",
   "main": "Principală",
-  "header_description": "Blog despre programare și nu numai"
+  "header_description": "Despre programare și nu numai"
 }

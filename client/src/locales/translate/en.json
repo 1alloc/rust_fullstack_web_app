@@ -1,6 +1,6 @@
 {
-  "blog": "Blog",
+  "about_me": "About me",
   "greeting": "Hello {name}",
   "main": "Main",
-  "header_description": "Blog about programming and not only"
+  "header_description": "About programming and not only"
 }
