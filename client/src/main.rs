@@ -3,6 +3,7 @@ use yew_router::prelude::*;
 use yew::services::ConsoleService;
 use yewtil::store::{Bridgeable, ReadOnly, StoreWrapper};
 use std::time::Duration;
+use stdweb::js;
 use wasm_cookies;
 use wasm_cookies::CookieOptions;
 mod agents;
@@ -60,8 +61,16 @@ impl Component for Model {
         let site_data = SiteData { title: "1alloc.com".to_string(), email: "1alloc@pm.me".to_string() };
 
         if wasm_cookies::get_raw("language").is_none() {
+            js! {document.documentElement.lang = "en-EN"};
             let cookies_options = CookieOptions::default();
             wasm_cookies::set("language", "english", &cookies_options.expires_after( Duration::from_secs(31536000)));
+        } else {
+            match wasm_cookies::get_raw("language").unwrap().as_str() {
+                "english" => js! { @(no_return) document.documentElement.lang = "en-EN" },
+                "russian" => js! { @(no_return) document.documentElement.lang = "ru-RU" },
+                "romanian" => js! { @(no_return) document.documentElement.lang = "ro-RO" },
+                _ => js! { @(no_return) document.documentElement.lang = "en-EN" },
+            }
         }
 
         let route_service: RouteService<()> = RouteService::new();
@@ -85,6 +94,13 @@ impl Component for Model {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::LocaleSwitch(lang) => {
+                match lang.as_str() {
+                    "english" => js! { @(no_return) document.documentElement.lang = "en-EN" },
+                    "russian" => js! { @(no_return) document.documentElement.lang = "ru-RU" },
+                    "romanian" => js! { @(no_return) document.documentElement.lang = "ro-RO" },
+                    _ => js! { @(no_return) document.documentElement.lang = "en-EN" },
+                }
+
                 let cookies_options = CookieOptions::default();
                 wasm_cookies::set("language", &*lang, &cookies_options.expires_after( Duration::from_secs(31536000)));
                 self.locale = config::Locale::get(&wasm_cookies::get_raw("language").unwrap());

@@ -6,7 +6,9 @@ edition = "2018"
 
 [dependencies]
 i18n_codegen = "0.1.1"
+stdweb = "0.4.20"
 yew = "0.18"
 yew-router = "0.15"
 yewtil = "0.4.0"
+wasm-bindgen = "0.2.74"
 wasm-cookies = "0.1.0"
