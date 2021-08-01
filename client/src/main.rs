@@ -1,5 +1,4 @@
 use yew::prelude::*;
-use yew_router::prelude::*;
 use yew::services::ConsoleService;
 use yewtil::store::{Bridgeable, ReadOnly, StoreWrapper};
 use std::time::Duration;
@@ -8,35 +7,28 @@ use wasm_cookies;
 use wasm_cookies::CookieOptions;
 mod agents;
 use crate::agents::locale::{LocaleStored, Request};
+mod routes;
+use crate::routes::routes::AppRoute;
+use yew_router::prelude::{Route, RouteService};
+use yew_router::agent::RouteAgent;
+use yew_router::Switch;
+use yew_router::components::RouterAnchor;
 mod locales;
 use locales::config;
 mod pages;
-use pages::{
-    index::Blog, about::About, counter::Counter,
-};
 mod components;
 use components::{
     header::Header, footer::Footer,
 };
 
 
-enum Msg {
+pub enum Msg {
     LocaleSwitch(String),
     LocaleStore(ReadOnly<LocaleStored>),
     RouteChanged(Route<()>),
 }
 
-#[derive(Switch, Debug, Clone)]
-pub enum AppRoute {
-    #[to = "/counter"]
-    Counter,
-    #[to = "/about"]
-    About,
-    #[to = "/"]
-    Blog,
-}
-
-struct Model {
+pub struct Model {
     site_data: SiteData,
     link: ComponentLink<Self>,
     route_service: RouteService<()>,
@@ -118,7 +110,7 @@ impl Component for Model {
 
             <Header title=self.site_data.title.clone() />
 
-            { self.route_switch() }
+            { AppRoute::route_switch(&self) }
 
             <Footer title=self.site_data.title.clone() email=self.site_data.email.clone()/>
             </>
@@ -127,15 +119,6 @@ impl Component for Model {
 }
 
 impl Model {
-    fn route_switch(&self) -> Html {
-        match AppRoute::switch(self.route.clone()) {
-            Some(AppRoute::Blog) => html! {<Blog/>},
-            Some(AppRoute::About) => html! {<About/>},
-            Some(AppRoute::Counter) => html! {<Counter/>},
-            None => html! {}
-        }
-    }
-
     fn view_nav(&self) -> Html {
         html! {
             <nav>
@@ -147,23 +130,23 @@ impl Model {
                         <RouterAnchor<AppRoute> route=AppRoute::About>{self.locale.about_me()}</RouterAnchor<AppRoute>>
                     </li>
                     <li class="dropdown">
-                        <span><img src="images/lang.png"/></span>
+                        <span><img src="/images/lang.png"/></span>
                         <ul class="dropdown-content" role="menu" aria-expanded="false">
                         <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("english")))>
                             <li>
-                                <img src="images/english.png" height="15" width="15"/>
+                                <img src="/images/english.png" height="15" width="15"/>
                                 <p>{"English"}</p>
                             </li>
                         </a>
                         <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("russian")))>
                             <li>
-                                <img src="images/russian.png" height="15" width="15"/>
+                                <img src="/images/russian.png" height="15" width="15"/>
                                 <p>{"Русский"}</p>
                             </li>
                         </a>
                         <a onclick=self.link.callback(|_lang| Msg::LocaleSwitch(String::from("romanian")))>
                             <li>
-                                <img src="images/romanian.png" height="15" width="15"/>
+                                <img src="/images/romanian.png" height="15" width="15"/>
                                 <p>{"Română"}</p>
                             </li>
                         </a>

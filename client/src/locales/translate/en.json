@@ -1,6 +1,9 @@
 {
   "about_me": "About me",
   "greeting": "Hello {name}",
+  "login": "Login",
+  "username": "Username",
+  "password": "Password",
   "main": "Main",
   "header_description": "About programming and not only"
 }

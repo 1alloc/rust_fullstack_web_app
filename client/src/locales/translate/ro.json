@@ -1,6 +1,9 @@
 {
   "about_me": "Despre mine",
   "greeting": "Bună {name}",
+  "login": "Login",
+  "username": "Username",
+  "password": "Parolă",
   "main": "Principală",
   "header_description": "Despre programare și nu numai"
 }

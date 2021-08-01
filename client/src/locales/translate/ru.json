@@ -1,6 +1,9 @@
 {
   "about_me": "Обо мне",
   "greeting": "Приветствуем, {name}",
+  "login": "Войти",
+  "username": "Имя пользователя",
+  "password": "Пароль",
   "main": "Главная",
   "header_description": "О программировании и не только"
 }
