@@ -65,20 +65,7 @@ impl Component for Model {
             let cookies_options = CookieOptions::default();
             wasm_cookies::set("language", "english", &cookies_options.expires_after( Duration::from_secs(31536000)));
         } else {
-            match wasm_cookies::get_raw("language").unwrap().as_str() {
-                "english" => js! { @(no_return) document.documentElement.lang = "en-EN";
-                    window.document.title = "1alloc.com • about programming and not only";
-                },
-                "russian" => js! { @(no_return) document.documentElement.lang = "ru-RU";
-                    window.document.title = "1alloc.com • о программировании и не только";
-                },
-                "romanian" => js! { @(no_return) document.documentElement.lang = "ro-RO";
-                    window.document.title = "1alloc.com • despre programare și nu numai";
-                },
-                _ => js! { @(no_return) document.documentElement.lang = "en-EN";
-                    window.document.title = "1alloc.com • about programming and not only";
-                },
-            }
+            config::Locale::html_lang_set(&*wasm_cookies::get_raw("language").unwrap());
         }
 
         let route_service: RouteService<()> = RouteService::new();
@@ -102,20 +89,7 @@ impl Component for Model {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::LocaleSwitch(lang) => {
-                match lang.as_str() {
-                    "english" => js! { @(no_return) document.documentElement.lang = "en-EN";
-                    window.document.title = "1alloc.com • about programming and not only";
-                    },
-                    "russian" => js! { @(no_return) document.documentElement.lang = "ru-RU";
-                    window.document.title = "1alloc.com • о программировании и не только";
-                    },
-                    "romanian" => js! { @(no_return) document.documentElement.lang = "ro-RO";
-                    window.document.title = "1alloc.com • despre programare și nu numai";
-                    },
-                    _ => js! { @(no_return) document.documentElement.lang = "en-EN";
-                    window.document.title = "1alloc.com • about programming and not only";
-                    },
-                }
+                config::Locale::html_lang_set(&*lang);
 
                 let cookies_options = CookieOptions::default();
                 wasm_cookies::set("language", &*lang, &cookies_options.expires_after( Duration::from_secs(31536000)));
