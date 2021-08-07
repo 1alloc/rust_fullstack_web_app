@@ -1,4 +1,6 @@
-#Run app
+#CLIENT SIDE:
+
+Run app
 
 If you haven't already, install Trunk:
 
@@ -49,3 +51,11 @@ api routes exception
 https://yew.rs/concepts/services/fetch
 
 reqwest - https://crates.io/crates/reqwest
+
+
+#SERVER SIDE
+
+Start server
+```bash
+cargo run
+```
