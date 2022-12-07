@@ -1,4 +1,8 @@
-#CLIENT SIDE:
+# PROJECT IS ABANDONED DUE NEW VERSIONS OF FRAMEWORKS AND MY LAZINESS TO UPDATE IT
+
+I'll try from scratch
+
+### CLIENT SIDE:
 
 Run app
 
@@ -53,7 +57,7 @@ https://yew.rs/concepts/services/fetch
 reqwest - https://crates.io/crates/reqwest
 
 
-#SERVER SIDE
+# SERVER SIDE
 
 Start server
 ```bash
